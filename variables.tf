@@ -29,6 +29,7 @@ variable "email" {
 variable "image" {
   type        = string
   description = "Disk image to use for workers"
+  default     = "projects/spacelift-workers/global/images/spacelift-worker-us-1634112379-tmoys2fp"
 }
 
 variable "instance_group_manager_name" {

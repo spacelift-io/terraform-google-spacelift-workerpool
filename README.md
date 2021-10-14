@@ -19,6 +19,10 @@ module "my_workerpool" {
   zone    = "us-central1-a"
   size    = 2
   email   = "abc@xyz.iam.gserviceaccount.com"
+  
+  providers = {
+    google = google
+  }
 }
 ```
 

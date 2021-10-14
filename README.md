@@ -13,12 +13,12 @@ module "my_workerpool" {
     export SPACELIFT_POOL_PRIVATE_KEY="${var.worker_pool_private_key}"
   EOT
 
-  image = "projects/spacelift-workers/global/images/spacelift-worker-us-1634112379-tmoys2fp"
+  image   = "projects/spacelift-workers/global/images/spacelift-worker-us-1634112379-tmoys2fp"
   network = "default"
-  region = "us-central1"
-  zone = "us-central1-a"
-  size = 2
-  email = "abc@xyz.iam.gserviceaccount.com"
+  region  = "us-central1"
+  zone    = "us-central1-a"
+  size    = 2
+  email   = "abc@xyz.iam.gserviceaccount.com"
 }
 ```
 

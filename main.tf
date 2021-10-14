@@ -45,6 +45,9 @@ fi
 echo "Making the Spacelift launcher executable" >> /var/log/spacelift/info.log
 chmod 755 /usr/bin/spacelift-launcher 2>>/var/log/spacelift/error.log
 
+echo "Retrieving GCP Instance ID" >> /var/log/spacelift/info.log
+export SPACELIFT_METADATA_gcp_instance_id=$(curl "curl "http://metadata.google.internal/computeMetadata/v1/instance/id" -H "Metadata-Flavor: Google")
+
 echo "Retrieving GCP VM Name" >> /var/log/spacelift/info.log
 export SPACELIFT_METADATA_gcp_instance_name=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/name" -H "Metadata-Flavor: Google")
 
@@ -58,7 +61,6 @@ export SPACELIFT_METADATA_cloud_provider=gcp
 
 echo "Starting the Spacelift binary" >> /var/log/spacelift/info.log
  /usr/bin/spacelift-launcher 1>>/var/log/spacelift/info.log 2>>/var/log/spacelift/error.log
-# /usr/bin/spacelift-launcher > >(tee -a /var/log/spacelift/info.log) 2> >(tee -a /var/log/spacelift/error.log >&2)
 )}
 
 spacelift

@@ -57,7 +57,7 @@ export SPACELIFT_METADATA_gcp_machine_type=$(curl "http://metadata.google.intern
 export SPACELIFT_METADATA_cloud_provider=gcp
 
 echo "Starting the Spacelift binary" >> /var/log/spacelift/info.log
- /usr/bin/spacelift-launcher 1>>/var/log/spacelift/info.log 2>>/var/log/spacelift/error.log
+/usr/bin/spacelift-launcher 1>>/var/log/spacelift/info.log 2>>/var/log/spacelift/error.log
 )}
 
 spacelift

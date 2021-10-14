@@ -6,7 +6,7 @@ Terraform module deploying a Spacelift worker pool on Google Cloud Platform usin
 
 ```terraform
 module "my_workerpool" {
-  source = "github.com/spacelift-io/terraform-google-spacelift-workerpool?ref=f15e319d8386e12756ded7c9354566f7204df261"
+  source = "github.com/spacelift-io/terraform-google-spacelift-workerpool?ref=e8255487a9aac1e80210b22b92d3ee1be2190f6b"
 
   configuration = <<-EOT
     export SPACELIFT_TOKEN="${var.worker_pool_config}"

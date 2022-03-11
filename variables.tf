@@ -23,25 +23,25 @@ variable "domain_name" {
 variable "email" {
   type        = string
   description = "Service account email to use"
-  default = null
+  default     = null
 }
 
 variable "image" {
   type        = string
   description = "Disk image to use for workers"
-  default     = "projects/spacelift-workers/global/images/spacelift-worker-us-1634112379-tmoys2fp"
+  default     = "projects/spacelift-workers/global/images/spacelift-worker-us-1646835906-1jyej6pe"
 }
 
 variable "instance_group_manager_name" {
   type        = string
   description = "Name for instance group manager"
-  default = "spacelift-workers"
+  default     = "spacelift-workers"
 }
 
 variable "instance_group_base_instance_name" {
   type        = string
   description = "Base name for instances in group"
-  default = "spacelift-worker"
+  default     = "spacelift-worker"
 }
 
 variable "machine_type" {

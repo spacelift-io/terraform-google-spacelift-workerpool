@@ -5,6 +5,15 @@ Terraform module deploying a Spacelift worker pool on Google Cloud Platform usin
 ## Usage
 
 ```terraform
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.14.0"
+    }
+  }
+}
+
 module "my_workerpool" {
   source = "github.com/spacelift-io/terraform-google-spacelift-workerpool?ref=77f43fb641854f2a8e41611ef4aad73986688753"
 

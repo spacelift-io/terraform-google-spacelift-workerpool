@@ -114,7 +114,6 @@ resource "google_compute_instance_group_manager" "spacelift-worker" {
     minimal_action        = "REPLACE"
     max_surge_percent     = 20
     max_unavailable_fixed = 2
-    min_ready_sec         = 60
     replacement_method    = "SUBSTITUTE"
   }
 }

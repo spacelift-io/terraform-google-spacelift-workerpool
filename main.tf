@@ -81,8 +81,14 @@ resource "google_compute_instance_template" "spacelift-worker" {
   }
 
   service_account {
-    email  = var.email
-    scopes = []
+    email = var.email
+    scopes = [
+      "https://www.googleapis.com/auth/compute",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/ndev.clouddns.readwrite",
+      "https://www.googleapis.com/auth/devstorage.full_control",
+      "https://www.googleapis.com/auth/userinfo.email",
+    ]
   }
 
   metadata_startup_script = join("\n", [

@@ -78,6 +78,7 @@ resource "google_compute_instance_template" "spacelift-worker" {
 
   network_interface {
     network = var.network
+    subnetwork = var.subnetwork
   }
 
   service_account {

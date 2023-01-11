@@ -1,6 +1,6 @@
 provider "google" {
-  project     = "spacelift-development"
-  region      = "us-central1"
+  project = "spacelift-development"
+  region  = "us-central1"
 }
 
 module "spacelift-workers" {
@@ -27,7 +27,7 @@ export SPACELIFT_POOL_PRIVATE_KEY=${var.spacelift_pool_private_key}
 }
 
 resource "google_compute_router" "router" {
-  name    = "my-router"
+  name    = "default-network-router"
   region  = "us-central1"
   network = "default"
 
@@ -37,7 +37,7 @@ resource "google_compute_router" "router" {
 }
 
 resource "google_compute_router_nat" "nat" {
-  name                               = "my-router-nat"
+  name                               = "default-network-router-nat"
   router                             = google_compute_router.router.name
   region                             = google_compute_router.router.region
   nat_ip_allocate_option             = "AUTO_ONLY"

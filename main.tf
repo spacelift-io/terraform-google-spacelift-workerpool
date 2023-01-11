@@ -82,7 +82,7 @@ resource "google_compute_instance_template" "spacelift-worker" {
 
   service_account {
     email  = var.email
-    scopes = []
+    scopes = var.service_account_scopes
   }
 
   metadata_startup_script = join("\n", [

@@ -70,3 +70,8 @@ variable "zone" {
   description = "Zone to create workerpool in"
 }
 
+variable "service_account_scopes" {
+  type        = list(string)
+  default     = []
+  description = "A list of custom OAuth scopes to add to the service account defined in the instance template"
+}

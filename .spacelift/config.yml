@@ -4,3 +4,6 @@ module_version: 1.1.1
 tests:
   - name: Set up in the default Network with a NAT router
     project_root: examples/default-network
+
+  - name: Define custom OAuth scopes for the service account
+    project_root: examples/custom-oauth-scopes

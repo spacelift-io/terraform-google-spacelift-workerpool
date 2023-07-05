@@ -26,6 +26,12 @@ variable "email" {
   default     = null
 }
 
+variable "project" {
+  type        = string
+  description = "GCP project to use"
+  default     = null
+}
+
 variable "image" {
   type        = string
   description = "Disk image to use for workers"

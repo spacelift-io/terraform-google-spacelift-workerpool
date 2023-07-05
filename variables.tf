@@ -28,7 +28,7 @@ variable "email" {
 
 variable "project" {
   type        = string
-  description = "GCP project to use"
+  description = "GCP project"
   default     = null
 }
 
@@ -59,6 +59,11 @@ variable "machine_type" {
 variable "network" {
   type        = string
   description = "Network to create workerpool in"
+}
+
+variable "subnetwork" {
+  type        = string
+  description = "Subnetwork to create workerpool in"
 }
 
 variable "region" {

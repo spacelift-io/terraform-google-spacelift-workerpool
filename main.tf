@@ -85,6 +85,10 @@ resource "google_compute_instance_template" "spacelift-worker" {
   region       = var.region
   project      = var.project
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   disk {
     source_image = var.image
   }

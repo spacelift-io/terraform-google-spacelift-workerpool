@@ -117,6 +117,7 @@ resource "google_compute_instance_group_manager" "spacelift-worker" {
 
   base_instance_name = var.instance_group_base_instance_name
   zone               = var.zone
+  project            = var.project
 
   version {
     instance_template = google_compute_instance_template.spacelift-worker.id

@@ -28,7 +28,7 @@ variable "email" {
 
 variable "project" {
   type        = string
-  description = "GCP project"
+  description = "GCP project to use"
   default     = null
 }
 

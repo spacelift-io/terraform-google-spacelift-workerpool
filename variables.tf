@@ -64,6 +64,7 @@ variable "network" {
 variable "subnetwork" {
   type        = string
   description = "Subnetwork to create workerpool in"
+  default     = null
 }
 
 variable "region" {

@@ -1,5 +1,5 @@
 version: 1
-module_version: 1.4.0
+module_version: 1.4.1
 
 tests:
   - name: Set up in the default Network with a NAT router

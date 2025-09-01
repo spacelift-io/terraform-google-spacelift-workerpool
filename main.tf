@@ -7,6 +7,8 @@ set -e
   EOF
 
   user_data_tail = <<EOF
+echo "Starting spacelift worker" >> /var/log/spacelift/info.log
+
 currentArch=$(uname -m)
 
 if [[ "$currentArch" != "x86_64" && "$currentArch" != "aarch64" ]]; then
@@ -14,12 +16,25 @@ if [[ "$currentArch" != "x86_64" && "$currentArch" != "aarch64" ]]; then
   return 1
 fi
 
-baseURL="https://downloads.${var.domain_name}/spacelift-launcher"
+# Check if we're connecting to FedRAMP environment by decoding SPACELIFT_TOKEN
+fedrampSuffix=""
+if [[ -n "$SPACELIFT_TOKEN" ]]; then
+  # Decode the base64 token and extract broker endpoint
+  decoded_token=$(echo "$SPACELIFT_TOKEN" | base64 -d 2>/dev/null || echo "")
+  if [[ -n "$decoded_token" ]]; then
+    broker_endpoint=$(echo "$decoded_token" | jq -r '.broker.endpoint' 2>/dev/null || echo "")
+    if [[ "$broker_endpoint" == *".gov.spacelift.io" ]]; then
+      fedrampSuffix="-fedramp"
+    fi
+  fi
+fi
+
+baseURL="https://downloads.${var.domain_name}/spacelift-launcher$fedrampSuffix"
 binaryURL=$(printf "%s-%s" "$baseURL" "$currentArch")
 shaSumURL=$(printf "%s-%s_%s" "$baseURL" "$currentArch" "SHA256SUMS")
 shaSumSigURL=$(printf "%s-%s_%s" "$baseURL" "$currentArch" "SHA256SUMS.sig")
 
-echo "Downloading Spacelift launcher" >> /var/log/spacelift/info.log
+echo "Downloading Spacelift launcher from $binaryURL" >> /var/log/spacelift/info.log
 curl "$binaryURL" --output /usr/bin/spacelift-launcher 2>>/var/log/spacelift/error.log
 
 echo "Importing public GPG key" >> /var/log/spacelift/info.log
@@ -112,7 +127,7 @@ resource "google_compute_instance_template" "spacelift-worker" {
 }
 
 resource "google_compute_instance_group_manager" "spacelift-worker" {
-  name    = var.instance_group_manager_name
+  name = var.instance_group_manager_name
 
   base_instance_name = var.instance_group_base_instance_name
   zone               = var.zone

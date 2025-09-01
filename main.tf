@@ -124,6 +124,10 @@ resource "google_compute_instance_template" "spacelift-worker" {
     automatic_restart   = false
     on_host_maintenance = "MIGRATE"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "google_compute_instance_group_manager" "spacelift-worker" {

@@ -15,7 +15,7 @@ terraform {
 }
 
 module "my_workerpool" {
-  source = "github.com/spacelift-io/terraform-google-spacelift-workerpool?ref=v1.5.0"
+  source = "github.com/spacelift-io/terraform-google-spacelift-workerpool?ref=v1.5.1"
 
   configuration = <<-EOT
     export SPACELIFT_TOKEN="${var.worker_pool_config}"

@@ -84,6 +84,13 @@ export SPACELIFT_METADATA_gcp_machine_type=$(curl "http://metadata.google.intern
 export SPACELIFT_METADATA_cloud_provider=gcp
 
 echo "Starting the Spacelift binary" >> /var/log/spacelift/info.log
+
+# Set FIPS 140 compliance for fedRAMP environments
+if [[ -n "$fedrampSuffix" ]]; then
+  echo "Setting GODEBUG=fips140=only for fedRAMP compliance" >> /var/log/spacelift/info.log
+  export GODEBUG=fips140=only
+fi
+
 /usr/bin/spacelift-launcher 1>>/var/log/spacelift/info.log 2>>/var/log/spacelift/error.log
 )}
 

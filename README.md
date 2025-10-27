@@ -40,3 +40,5 @@ module "my_workerpool" {
 The default Image used by this module comes from the [spacelift-worker-image](https://github.com/spacelift-io/spacelift-worker-image)
 repository. You can find the full list of AMIs on the [releases](https://github.com/spacelift-io/spacelift-worker-image/releases)
 page.
+
+This module automatically uses the FedRAMP worker image for FedRAMP worker pools.

@@ -2,7 +2,7 @@ locals {
   user_data_head = <<EOF
 #!/bin/bash
 
-spacelift () {(
+spacelift() {
 set -e
   EOF
 
@@ -83,14 +83,41 @@ export SPACELIFT_METADATA_gcp_machine_type=$(curl "http://metadata.google.intern
 
 export SPACELIFT_METADATA_cloud_provider=gcp
 
-echo "Starting the Spacelift binary" >> /var/log/spacelift/info.log
-/usr/bin/spacelift-launcher 1>>/var/log/spacelift/info.log 2>>/var/log/spacelift/error.log
-)}
+# Write environment file for the systemd service.
+# Dump the full environment so the launcher inherits everything exported above,
+# including vars set via var.configuration (e.g. SPACELIFT_TOKEN, HTTP_PROXY).
+mkdir -p /etc/spacelift
+env > /etc/spacelift/env
+chmod 600 /etc/spacelift/env
 
-spacelift
-echo "Powering off in 15 seconds" >> /var/log/spacelift/error.log
-sleep 15
-poweroff
+cat > /etc/systemd/system/spacelift-launcher.service <<UNIT
+[Unit]
+Description=Spacelift Launcher
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/spacelift/env
+ExecStart=/usr/bin/spacelift-launcher
+ExecStopPost=+/bin/sh -c 'sleep 15 && poweroff'
+KillMode=control-group
+TimeoutStopSec=30
+StandardOutput=append:/var/log/spacelift/info.log
+StandardError=append:/var/log/spacelift/error.log
+Restart=no
+UNIT
+
+systemctl daemon-reload
+systemctl start spacelift-launcher
+echo "Spacelift launcher started as systemd service" >> /var/log/spacelift/info.log
+}
+
+if ! spacelift; then
+  echo "Setup failed, powering off in 15 seconds" >> /var/log/spacelift/error.log
+  sleep 15
+  poweroff
+fi
   EOF
 }
 

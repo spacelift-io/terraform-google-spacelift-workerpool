@@ -11,7 +11,7 @@ worker_comms_url must be set when worker_comms_protocol is "poll".
 ```
 
 It is registered in `.spacelift/config.yml` with `negative: true`, so the Spacelift module test
-passes only when the plan fails. See the [default network example](../default-network/README.md)
+passes only when the plan fails. See the [NAT network example](../nat-network/README.md)
 for a working configuration.
 
 ## Usage

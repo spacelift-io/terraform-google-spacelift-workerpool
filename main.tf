@@ -1,4 +1,12 @@
 locals {
+  # Null-safe so a missing URL surfaces as the instance template precondition
+  # error below rather than a template interpolation error here.
+  worker_comms_url = var.worker_comms_url == null ? "" : var.worker_comms_url
+  worker_comms_configuration = join("\n", compact([
+    "export SPACELIFT_WORKER_COMMS_PROTOCOL=\"${var.worker_comms_protocol}\"",
+    var.worker_comms_protocol == "poll" ? "export SPACELIFT_WORKER_COMMS_URL=\"${local.worker_comms_url}\"" : null,
+  ]))
+
   user_data_head = <<EOF
 #!/bin/bash
 
@@ -143,6 +151,7 @@ resource "google_compute_instance_template" "spacelift-worker" {
 
   metadata_startup_script = join("\n", [
     local.user_data_head,
+    local.worker_comms_configuration,
     var.configuration,
     local.user_data_tail,
   ])
@@ -154,6 +163,11 @@ resource "google_compute_instance_template" "spacelift-worker" {
 
   lifecycle {
     create_before_destroy = true
+
+    precondition {
+      condition     = var.worker_comms_protocol != "poll" || var.worker_comms_url != null
+      error_message = "worker_comms_url must be set when worker_comms_protocol is \"poll\". Use https://app.spacelift.io for EU SaaS, https://app.us.spacelift.io for US SaaS, or the base URL of your self-hosted or FedRAMP Spacelift server."
+    }
   }
 }
 

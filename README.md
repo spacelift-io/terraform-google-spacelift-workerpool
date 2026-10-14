@@ -47,6 +47,10 @@ This default change is **breaking** because existing worker pools switch transpo
 
 The module exports these values before `configuration` runs, so values in `configuration` can still override them, but using `worker_comms_protocol` and `worker_comms_url` is recommended.
 
+## Service Account Scopes
+
+With `hashicorp/google` provider 8.2.0 or later, set at least one scope in `service_account_scopes`. When the list is empty, which is the default, the provider crashes while creating the instance template. Google recommends `https://www.googleapis.com/auth/cloud-platform` combined with IAM roles on the service account.
+
 ## Default Image
 
 The default Image used by this module comes from the [spacelift-worker-image](https://github.com/spacelift-io/spacelift-worker-image)

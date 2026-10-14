@@ -40,6 +40,7 @@ export SPACELIFT_POOL_PRIVATE_KEY=${var.spacelift_pool_private_key}
   size                        = 2
   email                       = "spacelift-test-worker@spacelift-development.iam.gserviceaccount.com"
   instance_group_manager_name = local.name
+  service_account_scopes      = ["https://www.googleapis.com/auth/cloud-platform"]
 
   providers = {
     google = google

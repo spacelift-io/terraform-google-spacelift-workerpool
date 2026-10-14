@@ -15,12 +15,14 @@ terraform {
 }
 
 module "my_workerpool" {
-  source = "github.com/spacelift-io/terraform-google-spacelift-workerpool?ref=v1.5.2"
+  source = "github.com/spacelift-io/terraform-google-spacelift-workerpool?ref=v3.0.0"
 
   configuration = <<-EOT
     export SPACELIFT_TOKEN="${var.worker_pool_config}"
     export SPACELIFT_POOL_PRIVATE_KEY="${var.worker_pool_private_key}"
   EOT
+
+  worker_comms_url = "https://app.spacelift.io"
 
   image   = "projects/spacelift-workers/global/images/spacelift-worker-us-1634112379-tmoys2fp"
   network = "default"
@@ -34,6 +36,16 @@ module "my_workerpool" {
   }
 }
 ```
+
+## Worker Communication
+
+Starting with v3.0.0, workers use HTTP long-polling by default. The module exports `SPACELIFT_WORKER_COMMS_PROTOCOL=poll` and `SPACELIFT_WORKER_COMMS_URL` to the launcher. This replaces the deprecated MQTT transport and means workers only need outbound HTTPS access to the Spacelift server for worker communication.
+
+When the protocol is `poll`, `worker_comms_url` is **required** and the plan fails if it is not set. Use `https://app.spacelift.io` for EU SaaS, `https://app.us.spacelift.io` for US SaaS, or the base URL provided for your self-hosted or FedRAMP Spacelift environment.
+
+This default change is **breaking** because existing worker pools switch transports when the instance group manager replaces their instances with the new template. Ensure outbound HTTPS access to the communication URL before upgrading. To temporarily remain on MQTT during migration, set `worker_comms_protocol = "mqtt"`. See the [v2.x to v3.0 upgrade guide](./docs/upgrade/v2.x-to-v3.0.md) for details.
+
+The module exports these values before `configuration` runs, so values in `configuration` can still override them, but using `worker_comms_protocol` and `worker_comms_url` is recommended.
 
 ## Default Image
 

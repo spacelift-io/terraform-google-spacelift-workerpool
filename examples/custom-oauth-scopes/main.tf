@@ -11,6 +11,8 @@ export SPACELIFT_TOKEN=${var.spacelift_token}
 export SPACELIFT_POOL_PRIVATE_KEY=${var.spacelift_pool_private_key}
   EOF
 
+  worker_comms_url = "https://app.spacelift.io"
+
   network                     = "default"
   region                      = "us-central1"
   zone                        = "us-central1-a"
